@@ -1,5 +1,7 @@
 {
   "name": "earnfeed",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
