@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from "ionic-angular";
 import firebase from "firebase";
+import { HomePage } from "../home/home";
 @IonicPage({
     name: "app-sign-up-page"
 })
@@ -13,7 +14,7 @@ export class SignUpPage {
     email: string = "";
     password: string = "";
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) { }
+    constructor(public navCtrl: NavController, public navParams: NavParams, private alertController: AlertController, private toastController: ToastController) { }
 
     ionViewDidLoad() {
         console.log("ionViewDidLoad SignUpPage");
@@ -32,6 +33,16 @@ export class SignUpPage {
                     })
                     .then(res => {
                         console.log("res", res);
+                        this.alertController.create({
+                          title: "COngo",
+                          message: "welcom",
+                          buttons: [{
+                            text: "ok",
+                            handler: ()=>{
+                              this.goToHomePage();
+                            }
+                          }]
+                        }).present();
                     })
                     .catch(err => {
                         console.log("err", err);
@@ -40,9 +51,16 @@ export class SignUpPage {
             })
             .catch((error: any) => {
                 console.log(error);
+                this.toastController.create({
+                  message: error.message,
+                  duration: 3000
+              }).present();
             });
     }
     goToLoginPage() {
         this.navCtrl.pop();
+    }
+    goToHomePage(){
+      this.navCtrl.setRoot(HomePage);
     }
 }

@@ -21,7 +21,10 @@ let config = {
   storageBucket: "earnbyfeed.appspot.com",
   messagingSenderId: "85959255381"
 };
-firebase.initializeApp(config)
+firebase.initializeApp(config);
+firebase.firestore().settings({
+  timestampsInSnapshots: true
+})
 
 @NgModule({
   declarations: [
