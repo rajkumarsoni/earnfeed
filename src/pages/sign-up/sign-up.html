@@ -1,6 +1,6 @@
-<ion-header hidden>
+<ion-header>
   <ion-navbar color="danger">
-    <ion-title text-center>EarnBySocialFeed</ion-title>
+
   </ion-navbar>
 </ion-header>
 
@@ -15,6 +15,11 @@
 
   <ion-grid style="width: 75%;">
     <ion-row class="row-style">
+      <ion-icon name="person" color="danger"></ion-icon>
+      <ion-input type="text" placeholder="your name"></ion-input>
+    </ion-row>
+
+    <ion-row class="row-style">
       <ion-icon name="mail" color="danger"></ion-icon>
       <ion-input type="email" placeholder="your email"></ion-input>
     </ion-row>
@@ -24,10 +29,10 @@
     </ion-row>
 
     <ion-row>
-      <button ion-button block round outline color="light" style="margin-top:20px">Login</button>
+      <button ion-button block round outline color="light" style="margin-top:20px">Sign up</button>
     </ion-row>
   </ion-grid>
-  <button ion-button block clear color="light" (click)="goToSignUpPage()">
-    Don't have a account? Sign up
+  <button ion-button block clear color="light" (click)="goToLoginPage()">
+    Already have a account? Sign in.
   </button>
 </ion-content>

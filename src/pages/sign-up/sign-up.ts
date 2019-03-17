@@ -2,23 +2,22 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage({
-  name: 'app-login-page'
+  name: "app-sign-up-page"
 })
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
+  selector: 'page-sign-up',
+  templateUrl: 'sign-up.html',
 })
-export class LoginPage {
+export class SignUpPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+    console.log('ionViewDidLoad SignUpPage');
   }
 
-  goToSignUpPage(){
-    this.navCtrl.push('app-sign-up-page');
+  goToLoginPage(){
+    this.navCtrl.pop();
   }
-
 }
