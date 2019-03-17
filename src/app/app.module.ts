@@ -11,6 +11,18 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import firebase from 'firebase';
+
+let config = {
+  apiKey: "AIzaSyAiNYHVm9DbdZYkQ4fHv9LcHi6UI3_2CRI",
+  authDomain: "earnbyfeed.firebaseapp.com",
+  databaseURL: "https://earnbyfeed.firebaseio.com",
+  projectId: "earnbyfeed",
+  storageBucket: "earnbyfeed.appspot.com",
+  messagingSenderId: "85959255381"
+};
+firebase.initializeApp(config)
+
 @NgModule({
   declarations: [
     MyApp,
