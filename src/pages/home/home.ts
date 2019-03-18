@@ -30,12 +30,15 @@ export class HomePage {
     })
       .then((doc) => {
         console.log("post", doc);
-        this.text = '';
-        this.toastController.create({
-          message: "posted",
-          duration: 3000
-        }).present();
-        this.getPosts();
+        setTimeout(() => {
+          this.toastController.create({
+            message: "posted",
+            duration: 3000
+          }).present();
+          this.text = '';
+          this.getPosts();
+        }, 1000);
+
       }).catch((error) => {
         console.log("post", error)
       })
@@ -47,17 +50,17 @@ export class HomePage {
   getPosts() {
     this.posts = [];
     let loading = this.loadinController.create({
-      content : "loading feed...S"
+      content: "loading feed...S"
     });
     loading.present();
-    let query =   firebase.firestore().collection("posts").orderBy('created', 'desc').limit(this.pageSize);
-    query.onSnapshot((snapshot)=>{
+    let query = firebase.firestore().collection("posts").orderBy('created', 'desc').limit(this.pageSize);
+    query.onSnapshot((snapshot) => {
       console.log(snapshot);
       let changedDocs = snapshot.docChanges();
-      changedDocs.forEach((changedDoc)=>{
-        if(changedDoc.type == "added"){}
-        if(changedDoc.type == "modified"){}
-        if(changedDoc.type == "removed"){}
+      changedDocs.forEach((changedDoc) => {
+        if (changedDoc.type == "added") { }
+        if (changedDoc.type == "modified") { }
+        if (changedDoc.type == "removed") { }
       })
     })
     query.get()
@@ -67,6 +70,10 @@ export class HomePage {
         })
         loading.dismiss();
         this.cursor = this.posts[this.posts.length - 1];
+
+        for (let i = 0; i <= this.posts.length; i++) {
+          console.log(i, this.posts[i].data().created.toDate());
+        }
         console.log(this.posts);
       }).catch((error) => {
         console.log(error);
@@ -119,13 +126,13 @@ export class HomePage {
     }
   }
 
-  logOut(){
-firebase.auth().signOut().then(()=>{
-  this.toastController.create({
-    message: "logout",
-    duration: 3000
-  }).present();
-  this.navCtrl.setRoot('app-login-page');
-});
+  logOut() {
+    firebase.auth().signOut().then(() => {
+      this.toastController.create({
+        message: "logout",
+        duration: 3000
+      }).present();
+      this.navCtrl.setRoot('app-login-page');
+    });
   }
 }

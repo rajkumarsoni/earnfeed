@@ -2,12 +2,13 @@ page-sign-up {
   .scroll-content{
     background-color: map-get($colors, danger );
   }
-  ion-item .item{
-    background-color: map-get($colors, danger );
+
+  ion-item{
+    background-color: map-get($colors, danger ) !important;
   }
   .logo{
     font-size: 25vh;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 20px;
   }
   h1,h6{

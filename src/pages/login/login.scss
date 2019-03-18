@@ -1,9 +1,10 @@
 page-login {
   .scroll-content{
     background-color: map-get($colors, danger );
+    padding-bottom: 0 !important;
   }
-  ion-item .item{
-    background-color: map-get($colors, danger );
+  ion-item{
+    background-color: map-get($colors, danger ) !important;
   }
   .logo{
     font-size: 25vh;
