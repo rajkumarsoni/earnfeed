@@ -1,10 +1,11 @@
 page-login {
   .scroll-content{
-    background-color: map-get($colors, danger );
+    background-image: linear-gradient(to bottom, #002244, #0098db);
     padding-bottom: 0 !important;
   }
   ion-item{
-    background-color: map-get($colors, danger ) !important;
+   // background-color: map-get($colors, danger ) !important;
+   background-image: linear-gradient(to bottom, #002244, #0098db);
   }
   .logo{
     font-size: 25vh;
@@ -13,7 +14,6 @@ page-login {
   }
   h1,h6{
     color: white;
-    font-size: 1em;
   }
   .row-style{
     background-color: white;
@@ -24,5 +24,8 @@ page-login {
       margin-top: 13px;
       margin-right: 10px;
     }
+  }
+  .icon-input{
+    color: #0098db  ;
   }
 }
