@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
-import { NavController, LoadingController, ToastController } from "ionic-angular";
+import { NavController, LoadingController, ToastController, Thumbnail } from "ionic-angular";
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
 import firebase from "firebase";
 import moment from 'moment';
 @Component({
@@ -11,10 +13,13 @@ export class HomePage {
   posts: any[] = [];
   pageSize: number = 10;
   cursor: any;
+  image: string;
   infiniteEvent: any;
 
   /** @ignore */
-  constructor(public navCtrl: NavController, private loadinController: LoadingController, private toastController: ToastController) {
+  constructor(
+    private camera: Camera,
+    public navCtrl: NavController, private loadinController: LoadingController, private toastController: ToastController) {
     this.getPosts();
   }
 
@@ -29,16 +34,33 @@ export class HomePage {
       owner_name: firebase.auth().currentUser.displayName
     })
       .then((doc) => {
-        console.log("post", doc);
-        setTimeout(() => {
-          this.toastController.create({
-            message: "posted",
-            duration: 3000
-          }).present();
-          this.text = '';
-          this.getPosts();
-        }, 1000);
-
+        if (this.image) {
+          this.upload(doc.id).then(() => {
+            this.text = "";
+            this.image = undefined;
+            console.log("post", doc);
+            setTimeout(() => {
+              this.toastController.create({
+                message: "posted",
+                duration: 3000
+              }).present();
+              this.text = '';
+              this.getPosts();
+            }, 1000);
+          });
+        } else {
+          this.text = "";
+          this.image = undefined;
+          console.log("post", doc);
+          setTimeout(() => {
+            this.toastController.create({
+              message: "posted",
+              duration: 3000
+            }).present();
+            this.text = '';
+            this.getPosts();
+          }, 1000);
+        }
       }).catch((error) => {
         console.log("post", error)
       })
@@ -134,5 +156,65 @@ export class HomePage {
       }).present();
       this.navCtrl.setRoot('app-login-page');
     });
+  }
+
+  addPhoto() {
+    let options = {
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      targetHeight: 512,
+      targetWidth: 512,
+      allowEdit: true,
+    }
+    this.camera.getPicture(options).then((base64Image) => {
+      console.log(base64Image);
+      this.image = "data:image/png;base64," + base64Image;
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+  upload(name: string) {
+
+    return new Promise((resolve, reject) => {
+      let loadigCtrl = this.loadinController.create({
+        content: "uploading image...."
+      })
+      loadigCtrl.present();
+
+      let ref = firebase.storage().ref("postImages/" + name);
+      let uploadTask = ref.putString(this.image.split(',')[1], "base64");
+      uploadTask.on('state_changed', (taskSnapshort) => {
+        let percentage = (taskSnapshort.bytesTransferred / taskSnapshort.totalBytes) * 100;
+        loadigCtrl.setContent('Uploading ' + percentage + "%");
+
+        console.log(taskSnapshort);
+      }, (error) => {
+        console.log(error)
+      }, () => {
+        console.log('complete');
+        uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+          console.log(url);
+          firebase.firestore().collection("posts").doc(name).update({
+            image: url
+          }).then(() => {
+            loadigCtrl.dismiss();
+            resolve();
+          }).catch((err) => {
+            loadigCtrl.dismiss();
+            reject();
+          })
+        }).catch(() => {
+          loadigCtrl.dismiss();
+          reject()
+        })
+
+      })
+    })
+
+
   }
 }

@@ -1,18 +1,19 @@
 page-home {
-  .row-style{
-    border: solid map-get($colors, danger ) 1px;
-    border-radius: 30px;
-    margin-top: 15px;
-
-    ion-input{
-      margin-top: 5px;
+    .row-style {
+        border: solid map-get($colors, danger) 1px;
+        border-radius: 30px;
+        margin-top: 15px;
+        ion-input {
+            margin-top: 5px;
+        }
     }
-
-  }
-  .bottom-bar{
-    background-color: map-get($colors , semilight);
-  }
-  .border-right{
-    border-right: 1px solid map-get($colors , light )
-  }
+    .bottom-bar {
+        background-color: map-get($colors, semilight);
+    }
+    .border-right {
+        border-right: 1px solid map-get($colors, light)
+    }
+    .round-corners {
+        border-radius: 24px;
+    }
 }
