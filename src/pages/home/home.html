@@ -37,9 +37,9 @@
         <img [src]="post.data().image" *ngIf="post.data().image" />
         <ion-row class="bottom-bar">
             <ion-col>
-                <button ion-button block icon-left clear small color="danger" class="border-right">
+                <button ion-button block icon-left clear small color="danger" class="border-right" (click)="like(post)">
         <ion-icon name="thumbs-up"></ion-icon>
-        <small>12 likes</small>
+        <small>{{ post.data().likesCount || 0}} likes</small>
       </button>
             </ion-col>
             <ion-col>
