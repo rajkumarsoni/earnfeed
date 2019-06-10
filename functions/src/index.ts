@@ -10,40 +10,44 @@ admin.initializeApp(functions.config().firebase);
 //  response.send("Hello from Firebase!");
 // });
 
-export const updateLikesCount = functions.https.onRequest((req:any, res:any) => {
-    
-    console.log(req.body.postId);
-    const a =JSON.parse(req.body)
+export const updateLikesCount = functions.https.onRequest((req: any, res: any) => {
+
+    const a = JSON.parse(req.body)
     console.log(a)
-    const postId = a.postId;
-    const userId = a.userId;
-    const action = a.action;  //like or unlike
-   console.log(a.postId);
-   console.log(a);
-   console.log(userId);
-   console.log(action);
+    const postId = a.referId;
+    console.log(a.postId);
+    const abc = admin.firestore().collection('users');
+    abc.doc(postId).get().then((data: any) => {
 
-    console.log(req);
-    admin.firestore().collection('posts').doc(postId).get().then((data: any)=>{
-    
-        let likesCount = data.data().likesCount || 0;
-        let likes  = data.data().likes || [];
-
+        let referCoins = data.data().refredCoins || 0;
         const updateData: any = {};
+        updateData[`refredCoins`] = referCoins + 1000
 
-        if(action === 'like'){
-            updateData['likesCount'] = ++likesCount;
-            updateData[`likes.${userId}`] = true;
-        }else{
-            updateData['likesCount'] = --likesCount;
-            updateData[`likes.${userId}`] = false;
-        }
+        let level2 = data.data().referId;
 
-        admin.firestore().collection('posts').doc(postId).update(updateData).then(()=>{
-            res.status(200).send('Done')
-        }).catch((err)=>{
-            res.status(err.code).send(err.message)
+
+        abc.doc(level2).get().then((data: any) => {
+            let referCoinss = data.data().refredCoins || 0;
+            const updateLevel2Data: any = {};
+            updateLevel2Data[`refredCoins`] = referCoinss + 500;
+
+
+            abc.doc(postId).update(updateData).then(() => {
+                abc.doc(level2).update(updateLevel2Data).then(() => {
+                    res.status(200).send('Done')
+                }).catch((err) => {
+                    res.status(err.code).send(err.message)
+                })
+
+            }).catch((err) => {
+                res.status(err.code).send(err.message)
+            })
+
         })
+
+
+
+
 
     })
 })
